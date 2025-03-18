@@ -28,7 +28,7 @@ router.post("/forgotPassword", async (req,res) => {
         from: process.env.WESHARE_EMAIL,
         to: user.username,
         subject: 'Password Reset for Portfolio Website',
-        text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process within 10 minutes of receiving it:\n\nhttp://localhost:5173/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`
+        text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process within 10 minutes of receiving it:\n\nhttps://arbihamolli.onrender.com/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`
       };
 
     transporter.sendMail(mailOptions, (err, response) => {
