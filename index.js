@@ -60,17 +60,17 @@ app.get("/", (req,res) => {
   res.send("Welcome!")
 })
 
-// const backendUrl = "https://weshare-server.onrender.com";
-// const job = new cron.CronJob('*/14 * * * *', function(){
-//   https.get(backendUrl, (res) => {
-//     if (res.statusCode === 200){
-//       console.log("server restarted")
-//     }
-//   }).on("error", (err) => {
-//       console.log("error");
-//   })
-// })
-// job.start();
+const backendUrl = "https://portfolioserver-d0td.onrender.com";
+const job = new cron.CronJob('*/14 * * * *', function(){
+  https.get(backendUrl, (res) => {
+    if (res.statusCode === 200){
+      console.log("server restarted")
+    }
+  }).on("error", (err) => {
+      console.log("error");
+  })
+})
+job.start();
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
