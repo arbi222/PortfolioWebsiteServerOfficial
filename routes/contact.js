@@ -23,7 +23,7 @@ router.post("/contactOwner", async (req,res) => {
         const user = await User.findById(req.body._id);
 
         await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-            from: `"Arbi's Portfolio Support" <postmaster@${process.env.MAILGUN_DOMAIN}>`,
+            from: `"Arbi's Portfolio Support" <${process.env.WESHARE_EMAIL}>`,
             to: [user.username],
             subject: "New Job Offer Request 💼",
 
