@@ -25,7 +25,7 @@ const resetPassRoute = require("./routes/resetPass");
 mongoose.connect(process.env.MONGO_URL);
 
 const corsOptions = {
-  origin: ["https://arbihamolli.onrender.com"],
+  origin: ["https://arbihamolli.com"],
   credentials: true,
 };
 
