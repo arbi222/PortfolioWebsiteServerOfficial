@@ -36,7 +36,7 @@ router.post("/contactOwner", async (req,res) => {
 
                 <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
                   <p><strong>Name:</strong> ${req.body.name}</p>
-                  ${req.body.mobileNumber && <p><strong>Mobile:</strong> ${req.body.mobileNumber}</p>}
+                  <p><strong>Mobile:</strong> ${req.body.mobileNumber ? req.body.mobileNumber : "Not entered."}</p>
                   <p><strong>Email:</strong> ${req.body.emailContact}</p>
                   <p><strong>Subject:</strong> ${req.body.subject}</p>
                 </div>
