@@ -15,7 +15,8 @@ const Mailgun = require("mailgun.js");
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({
   username: "api",
-  key: process.env.MAILGUN_SENDER_API_KEY
+  key: process.env.MAILGUN_SENDER_API_KEY,
+  url: "https://api.eu.mailgun.net"
 });
 
 router.post("/contactOwner", async (req,res) => {
@@ -23,7 +24,7 @@ router.post("/contactOwner", async (req,res) => {
         const user = await User.findById(req.body._id);
 
         await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-            from: `"Arbi's Portfolio Support" <${process.env.WESHARE_EMAIL}>`,
+            from: `"Arbi's Portfolio Support" <noreply@${process.env.MAILGUN_DOMAIN}>`,
             to: [user.username],
             subject: "New Job Offer Request 💼",
 
