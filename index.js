@@ -17,7 +17,7 @@ const sessionMiddleware = require("./middlewares/sessionConfig");
 mongoose.connect(process.env.MONGO_URL);
 
 const corsOptions = {
-  origin: [`${process.env.FRONTEND_LINK}`],
+  origin: process.env.FRONTEND_LINK,
   credentials: true,
 };
 
