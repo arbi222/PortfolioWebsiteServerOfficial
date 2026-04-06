@@ -6,12 +6,31 @@ const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
 const morgan = require("morgan")
 const passport = require("passport")
-const session = require("express-session");
 const cors = require("cors");
 const cron = require("cron");
 const https = require("https");
 
 dotenv.config()
+
+const sessionMiddleware = require("./middlewares/sessionConfig");
+
+mongoose.connect(process.env.MONGO_URL);
+
+const corsOptions = {
+  origin: [`${process.env.FRONTEND_LINK}`],
+  credentials: true,
+};
+
+// middlewares
+app.use(cors(corsOptions));
+app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
+app.use(morgan("common"));
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
 
 const authRoute  = require("./routes/auth");
 const userRoute = require("./routes/users");
@@ -21,30 +40,6 @@ const contact = require("./routes/contact");
 const category = require("./routes/categorys");
 const projectItem = require("./routes/projectItem");
 const resetPassRoute = require("./routes/resetPass");
-
-mongoose.connect(process.env.MONGO_URL);
-
-const corsOptions = {
-  origin: ["https://arbihamolli.com", "https://www.arbihamolli.com"],
-  credentials: true,
-};
-
-// middleware
-app.use(express.json())
-app.use(cookieParser())
-app.use(cors(corsOptions));
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(morgan("common"))
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: true }
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);

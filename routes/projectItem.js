@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const ProjectItem = require("../models/ProjectItem");
 const Category = require("../models/Category");
+const checkSessionExpiry = require("../middlewares/sessionExpiry");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 // Get All Items of a Category
 router.get("/getAllItems/:categoryId", async (req, res) => {
@@ -14,7 +16,7 @@ router.get("/getAllItems/:categoryId", async (req, res) => {
 });
 
 // Create ProjectItem
-router.post("/createorUpdateProject", async (req, res) => {
+router.post("/createorUpdateProject", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const categoryId = req.body.categoryId;
         const categoryName = req.body.categoryName;
@@ -45,7 +47,7 @@ router.post("/createorUpdateProject", async (req, res) => {
 });
 
 // Delete ProjectItem
-router.delete("/deleteProjectItem/:id", async (req, res) => {
+router.delete("/deleteProjectItem/:id", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const projectItem = await ProjectItem.findById(req.params.id);
         await projectItem.deleteOne();

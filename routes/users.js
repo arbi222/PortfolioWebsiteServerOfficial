@@ -1,10 +1,12 @@
 const router = require("express").Router();
-const User = require("../models/User")
+const User = require("../models/User");
+const checkSessionExpiry = require("../middlewares/sessionExpiry");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
-// Get user
-router.get("/getUser", async (req, res) => {
+// Get public user
+router.get("/publicUser", async (req, res) => {
     try{
-        const user = await User.find();
+        const user = await User.findOne();
         if (user){
             res.status(200).json(user);
         }
@@ -14,10 +16,10 @@ router.get("/getUser", async (req, res) => {
     }
 });
 
-// Get user
-router.get("/getUser/:accessToken", async (req, res) => {
+// Get authenticated user
+router.get("/me", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
-        const user = await User.findById(req.params.accessToken);
+        const user = await User.findById(req.user.id).select("-password -hash -__v -updatedAt -salt");
         if (user){
             res.status(200).json(user);
         }
@@ -28,7 +30,7 @@ router.get("/getUser/:accessToken", async (req, res) => {
 });
 
 // Adding skills to user
-router.put("/addSkill", async (req, res) => {
+router.put("/addSkill", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         await User.findByIdAndUpdate(req.body.userId, {$set: {skills: req.body.skills}});
         res.status(200).json("Skills updated.");
@@ -39,7 +41,7 @@ router.put("/addSkill", async (req, res) => {
 });
 
 // Update user
-router.put("/:id", async (req,res)=> {
+router.put("/:id", checkSessionExpiry, isAuthenticated, async (req,res)=> {
     if (req.body.userId === req.params.id){
         if (req.body.newPassword){
             if (req.body.newPassword === req.body.confirmPassword){

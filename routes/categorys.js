@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const Category = require("../models/Category");
 const ProjectItem = require("../models/ProjectItem");
+const checkSessionExpiry = require("../middlewares/sessionExpiry");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 // Create Category
-router.post("/createCategory", async (req, res) => {
+router.post("/createCategory", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const existingCategory = await Category.find({categoryName: req.body.categoryName});
         if (existingCategory.length > 0){
@@ -32,7 +34,7 @@ router.get("/getCategorys", async (req, res) => {
 })
 
 // Delete Category
-router.delete("/deleteCategory/:categoryName", async (req, res) => {
+router.delete("/deleteCategory/:categoryName", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const category = await Category.findOne({categoryName: req.params.categoryName});
         await ProjectItem.deleteMany({categoryId: category.id});
