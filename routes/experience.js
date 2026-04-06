@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Experience = require("../models/Experience");
-const User = require("../models/User");
+const checkSessionExpiry = require("../middlewares/sessionExpiry");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 // Get Experience
 router.get("/getAllExperiences", async (req, res) => {
@@ -14,7 +15,7 @@ router.get("/getAllExperiences", async (req, res) => {
 });
 
 // Create or Update Experience
-router.post("/addOrUpdateExperience", async (req, res) => {
+router.post("/addOrUpdateExperience", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const experience = await Experience.findById(req.body._id);
         if (experience){
@@ -34,7 +35,7 @@ router.post("/addOrUpdateExperience", async (req, res) => {
 });
 
 // Delete Experience
-router.delete("/deleteExperience/:id", async (req, res) => {
+router.delete("/deleteExperience/:id", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const experience = await Experience.findById(req.params.id);
         await experience.deleteOne();

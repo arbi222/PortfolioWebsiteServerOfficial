@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const About = require("../models/About");
+const checkSessionExpiry = require("../middlewares/sessionExpiry");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 // Get about
 router.get("/getAbout/:userId", async (req, res) => {
@@ -15,7 +17,7 @@ router.get("/getAbout/:userId", async (req, res) => {
 });
 
 // Create or Update about
-router.post("/createOrUpdateAbout", async (req, res) => {
+router.post("/createOrUpdateAbout", checkSessionExpiry, isAuthenticated, async (req, res) => {
     try{
         const about = await About.findOne({userId: req.body.about.userId});
         if (about){
