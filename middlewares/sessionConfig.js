@@ -10,9 +10,10 @@ const sessionMiddleware = session({
     mongoUrl: process.env.MONGO_URL,
     collectionName: 'sessions'
   }),
-  cookie: { 
+  cookie: {
     sameSite: "none",        // none for production
     secure: true,          // secure: false for http , true for https
+    httpOnly: true, 
     maxAge: 1000 * 60 * 60  // 60 min = 1 hour 
   }      
 });
