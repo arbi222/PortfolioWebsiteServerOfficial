@@ -55,7 +55,7 @@ app.get("/", (req,res) => {
   res.send("Welcome!")
 })
 
-const backendUrl = "https://portfolioserver-d0td.onrender.com/";
+const backendUrl = "https://www.portfolio.arbihamolli.com/";
 const job = new cron.CronJob('*/2 * * * *', function(){
   https.get(backendUrl, (res) => {
     if (res.statusCode === 200){
