@@ -11,7 +11,7 @@ const sessionMiddleware = session({
     collectionName: 'sessions'
   }),
   cookie: {
-    sameSite: "none",        // none for production
+    sameSite: "lax",        // none for production
     secure: true,          // secure: false for http , true for https
     httpOnly: true, 
     maxAge: 1000 * 60 * 60  // 60 min = 1 hour 
