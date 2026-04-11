@@ -13,7 +13,8 @@ const sessionMiddleware = session({
   cookie: {
     sameSite: "lax",        // none for production
     secure: true,          // secure: false for http , true for https
-    httpOnly: true, 
+    httpOnly: true,
+    domain: ".arbihamolli.com",
     maxAge: 1000 * 60 * 60  // 60 min = 1 hour 
   }      
 });
