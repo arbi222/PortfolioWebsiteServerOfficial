@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 const checkSessionExpiry = require("../middlewares/sessionExpiry");
 const isAuthenticated = require("../middlewares/isAuthenticated");
+const axios = require("axios");
 
 // Get public user
 router.get("/publicUser", async (req, res) => {
@@ -26,6 +27,25 @@ router.get("/me", checkSessionExpiry, isAuthenticated, async (req, res) => {
     }
     catch(err){
         res.status(500).json(err);
+    }
+});
+
+router.get("/download-cv", async (req, res) => {
+    try {
+        const fileUrl = req.query.url;
+
+        const response = await axios.get(fileUrl, {
+            responseType: "stream",
+        });
+
+        res.setHeader("Content-Disposition", 'attachment; filename="Resume.pdf"');
+        res.setHeader("Content-Type", "application/pdf");
+
+        response.data.pipe(res);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Download failed");
     }
 });
 
